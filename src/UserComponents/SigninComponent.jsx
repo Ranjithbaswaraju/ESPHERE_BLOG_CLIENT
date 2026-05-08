@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 const SignInComponent = () => {
-    const navigate=useNavigate()
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -19,35 +19,58 @@ const SignInComponent = () => {
     try {
       const res = await axios.post(`${BaseUrl}/apiUser/LoginUser`, form);
 
-    //   localStorage.setItem("token", res.data.token);
-    //   alert(res.data.message);
-    //   console.log(res.data.message);
 
-    const token=res.data.token
+      const token = res.data.token;
 
-    localStorage.setItem("token",token)
+      localStorage.setItem("token", token);
 
-    const user=jwtDecode(token)
+      const user = jwtDecode(token);
 
-      if(user.role=="admin"){
-        navigate("/admin")
-      }
-      else if(user.role=="author"){
-        navigate("/author")
-      }
-      else{
-        navigate("/")
+      if (user.role == "admin") {
+        navigate("/admin");
+      } else if (user.role == "author") {
+        navigate("/author");
+      } else {
+        navigate("/");
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
+
+      alert(err.response.data.message)
+      
     }
   };
 
   return (
     <>
-      <input type="email" name="email" onChange={changeHandler} />
-      <input type="text" name="password" onChange={changeHandler} />
-      <button onClick={SubmitHandler}>Login</button>
+    
+      <div className="min-h-screen flex justify-center items-center bg-[oklch(98.2%_0.018_155.826)]">
+        
+        <form 
+        onSubmit={(e)=>{
+          e.preventDefault()
+          SubmitHandler()
+        }}
+        className=" w-90 bg-white flex flex-col gap-5 p-6 rounded-xl  shadow-md ">
+          <p className="text-3xl font-bold text-red-400 text-center">Login Form</p>
+          <input
+            type="email"
+            placeholder="Enter Email"
+            name="email"
+            onChange={changeHandler}
+            className="border rounded w-full p-2 mb-2"
+          />
+          <input
+            type="text"
+            placeholder="Enter Password"
+            name="password"
+            onChange={changeHandler}
+            className="border rounded w-full p-2 mb-6"
+          />
+          <span className="font-serif">Don't have account ?  <a className="text-red-500 underline" href="./signup">Register</a></span>
+          <button type="submit" className="bg-blue-500 text-white w-full py-2 rounded hover:bg-blue-600" onClick={()=>SubmitHandler()}>Login</button>
+        </form>
+      </div>
     </>
   );
 };

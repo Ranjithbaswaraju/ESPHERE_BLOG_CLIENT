@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import SignInComponent from "./UserComponents/SigninComponent"
 import AdminDashBoard from "./UserDashBoards/adminDashboard"
 import AuthorDashBoard from "./UserDashBoards/authorDashboard"
+import "./App.css"
 
 
 
@@ -12,14 +13,19 @@ function App() {
 
   return (
     <>
-     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SignupComponent />} /> 
-        <Route path="/signup" element={<SignupComponent />} />
-        <Route path="/login" element={<SignInComponent />} />
-        <Route path="/admin" element={<AdminDashBoard/>}/>
-        <Route path="/author" element={<AuthorDashBoard/>}/>
-      </Routes>
+    <BrowserRouter>
+ <div>
+        
+
+        <Routes>
+          <Route path="/" element={<SignupComponent />} />
+          <Route path="/signup" element={<SignupComponent />} />
+          <Route path="/login" element={<SignInComponent />} />
+          <Route path="/admin" element={<AdminDashBoard />} />
+          <Route path="/author" element={<AuthorDashBoard />} />
+        </Routes>
+      </div>
+      
     </BrowserRouter>
     </>
   )

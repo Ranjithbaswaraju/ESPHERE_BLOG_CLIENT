@@ -1,15 +1,12 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BaseUrl } from "../UserComponents/SignupComponent";
 
 const AuthorDashBoard = () => {
   const [blog, setBlogs] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [editId, setEditId] = useState(null);
-  const [editTitle, setEditTitle] = useState("");
-  const [editContent, setEditContent] = useState("");
 
   const token = localStorage.getItem("token");
   const user = jwtDecode(token);
@@ -21,8 +18,8 @@ const AuthorDashBoard = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+
       setBlogs(res.data.allBlogs);
-      console.log(res.data.allBlogs);
     } catch (err) {
       alert(err.message);
     }
@@ -40,11 +37,14 @@ const AuthorDashBoard = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
-      alert("Blog Created Succesfully");
-      setContent("");
+
+      alert("Blog Created Successfully");
+
       setTitle("");
+      setContent("");
+
       getBlogs();
     } catch (err) {
       alert(err.message);
@@ -58,32 +58,10 @@ const AuthorDashBoard = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+
       alert("Blog Deleted");
-      getBlogs();
-    } catch (err) {
-      alert(err.message);
-    }
-  };
 
-  const updateBlog = async () => {
-    try {
-      await axios.put(
-        `${BaseUrl}/apiPosts/updateBlog/${editId}`,
-        {
-          title: editTitle,
-          content: editContent,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      alert("updated");
       getBlogs();
-      setContent("");
-      setEditContent("");
     } catch (err) {
       alert(err.message);
     }
@@ -94,80 +72,71 @@ const AuthorDashBoard = () => {
   }, []);
 
   return (
-    <div>
-      <input
-        type="text"
-        name="title"
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <input
-        type="text"
-        name="content"
-        onChange={(e) => setContent(e.target.value)}
-      />
-      <button onClick={createBlog}>Create Blog</button>
-      <hr />
+    <div className="min-h-screen flex flex-col justify-center items-center gap-6 p-6 bg-[#f3f4ff]">
+      
+      <h1 className="text-4xl font-extrabold text-blue-500">
+        WellCome to Author Dashboard
+      </h1>
 
-      {blog.length == 0 ? (
-        <p style={{ color: "red" }}>No Blogs are there</p>
-      ) : (
-        blog.map((blogs) => {
-          return (
-            <div
-              key={blogs._id}
-              style={{
-                border: "1px solid black",
-                margin: "10px",
-                padding: "10px",
-              }}
-            >
-              {/*               
-              <h3>{blogs.title}</h3>
-              <p>{blogs.content}</p> */}
+      <div className="bg-white w-96 flex flex-col gap-4 p-6 rounded-xl shadow-md">
+        
+        <input
+          type="text"
+          placeholder="Enter Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="border rounded w-full p-2"
+        />
 
-              {editId === blogs._id ? (
-                <>
-                  <input
-                    type="text"
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    value={editContent}
-                    onChange={(e) => setEditContent(e.target.value)}
-                  />
-                  <button onClick={updateBlog}>Save</button>
-                  <button onClick={() => setEditId(null)}>Cancel</button>
-                </>
-              ) : (
-                <>
-                  <h3>{blogs.title}</h3>
-                  <p>{blogs.content}</p>
-                </>
-              )}
+        <input
+          type="text"
+          placeholder="Enter Content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className="border rounded w-full p-2"
+        />
 
-              {blogs.authorId === user.userId && (
-                <>
+        <button
+          onClick={createBlog}
+          className="bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+        >
+          Create Blog
+        </button>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-5">
+        {blog.length === 0 ? (
+          <p className="text-red-500 text-xl">No Blogs Available</p>
+        ) : (
+          blog.map((blogs) => {
+            return (
+              <div
+                key={blogs._id}
+                className="bg-white w-80 p-5 rounded-xl shadow-md border"
+              >
+                <h3 className="text-2xl font-bold mb-3">
+                  {blogs.title}
+                </h3>
+
+                <p className="mb-4 text-gray-700">
+                  {blogs.content}
+                </p>
+
+                {blogs.authorId === user.userId && (
                   <button
-                    onClick={() => {
-                      setEditId(blogs._id);
-                      setEditTitle(blogs.title);
-                      setEditContent(blogs.content);
-                    }}
+                    onClick={() => deleteBlog(blogs._id)}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                   >
-                    Edit
-                  </button>
-                  <button onClick={() => deleteBlog(blogs._id)}>
                     Delete My Blog
                   </button>
-                </>
-              )}
-            </div>
-          );
-        })
-      )}
+                )}
+              </div>
+            );
+          })
+        )}
+      </div>
     </div>
   );
 };
+
 export default AuthorDashBoard;

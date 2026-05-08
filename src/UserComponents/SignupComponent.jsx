@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import "../index.css"
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-// console.log(BaseUrl,"")
 
 export const BaseUrl = "https://esphere-blog-server-1.onrender.com";
 const SignupComponent = () => {
+  
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -26,37 +27,49 @@ const SignupComponent = () => {
       console.log(res.data.message);
       navigate("/login");
     } catch (err) {
-      console.log(err, "-------");
-      alert("signup failed");
+      console.log(err.response.data)
+      alert(err.response.data.message)
     }
   };
   console.log(form);
   return (
-    <div>
-      <input
+    <div className="min-h-screen flex justify-center items-center bg-[oklch(98.2%_0.018_155.826)]">
+      
+      <form  onSubmit={(e) => {
+    e.preventDefault();
+    handleSubmit();
+  }}
+   className="bg-white w-96 flex flex-col gap-5 p-6 rounded-xl shadow-md ">
+        <p className="text-3xl font-bold text-red-500 text-center">Registration Form</p>
+        <input
         type="text"
         name="username"
-        placeholder="enter username"
+        placeholder="Enter username"
         onChange={changeHandler}
+        className="border rounded w-full p-2 mb-6"
       />
       <input
         type="email"
         name="email"
-        placeholder="enter email"
+        placeholder="Enter email"
         onChange={changeHandler}
+         className="border rounded w-full p-2 mb-6"
       />
       <input
         type="text"
         name="password"
-        placeholder="enter password"
+        placeholder="Enter password"
         onChange={changeHandler}
+         className="border rounded w-full p-2 mb-6"
       />
-      <select name="role" onChange={changeHandler}>
+      <select name="role" onChange={changeHandler}  className="border rounded w-full p-2 mb-6">
         Select User
         <option value="author">Author</option>
         <option value="admin">Admin</option>
       </select>
-      <button onClick={handleSubmit}>Signup</button>
+       <span className="font-serif">Already have an account ? :<a a className="text-red-500 underline" href="./login">Login</a></span>
+      <button type="submit" className="bg-blue-500 text-white w-full py-2 rounded hover:bg-blue-600" onClick={handleSubmit}>Signup</button>
+      </form>
     </div>
   );
 };

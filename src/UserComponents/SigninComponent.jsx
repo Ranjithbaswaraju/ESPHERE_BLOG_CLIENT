@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { BaseUrl } from "./SignupComponent";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import LogOutComponent from "./logoutComponent";
 import { toast } from "react-toastify";
@@ -71,10 +71,10 @@ const SignInComponent = () => {
             className="border rounded w-full p-2 mb-6"
           />
           <span className="font-serif">
-            Don't have account ?{" "}
-            <a className="text-red-500 underline" href="./signup">
-              Register
-            </a>
+            Already have an account ?
+            <Link to="/login" className="text-blue-500 ml-2">
+              Login
+            </Link>
           </span>
           <button
             type="submit"

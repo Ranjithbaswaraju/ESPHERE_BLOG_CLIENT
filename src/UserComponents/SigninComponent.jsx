@@ -71,9 +71,9 @@ const SignInComponent = () => {
             className="border rounded w-full p-2 mb-6"
           />
           <span className="font-serif">
-            Already have an account ?
-            <Link to="/login" className="text-blue-500 ml-2">
-              Login
+            Don't have an account ?
+            <Link to="/signup" className="text-blue-500 ml-2">
+              Register
             </Link>
           </span>
           <button

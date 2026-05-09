@@ -56,6 +56,7 @@ const SignInComponent = () => {
           <input
             type="email"
             placeholder="Enter Email"
+            
             name="email"
             onChange={changeHandler}
             className="border rounded w-full p-2 mb-2"

@@ -3,6 +3,7 @@ import "../index.css"
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const BaseUrl = "https://esphere-blog-server-1.onrender.com";
 const SignupComponent = () => {
@@ -23,12 +24,15 @@ const SignupComponent = () => {
   const handleSubmit = async () => {
     try {
       const res = await axios.post(`${BaseUrl}/apiUser/SignupUser`, form);
-      alert(res.data.message);
+      // alert(res.data.message);
       console.log(res.data.message);
       navigate("/login");
+      toast.success("User Registered Successfully")
     } catch (err) {
       console.log(err.response.data)
-      alert(err.response.data.message)
+      // alert(err.response.data.message)
+      toast.error("Registration Failed")
+
     }
   };
   console.log(form);

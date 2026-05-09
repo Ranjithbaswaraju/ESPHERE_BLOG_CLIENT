@@ -2,6 +2,8 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { BaseUrl } from "../UserComponents/SignupComponent";
+import LogOutComponent from "../UserComponents/logoutComponent";
+import { toast } from "react-toastify";
 
 const AuthorDashBoard = () => {
   const [blog, setBlogs] = useState([]);
@@ -40,14 +42,16 @@ const AuthorDashBoard = () => {
         }
       );
 
-      alert("Blog Created Successfully");
+      // alert("Blog Created Successfully");
+      toast.success("Blog Created Successfully")
 
       setTitle("");
       setContent("");
 
       getBlogs();
     } catch (err) {
-      alert(err.message);
+      // alert(err.message);
+      toast.error("Blog Creation Failed")
     }
   };
 
@@ -59,11 +63,13 @@ const AuthorDashBoard = () => {
         },
       });
 
-      alert("Blog Deleted");
+      // alert("Blog Deleted");
+      toast.success("Blog Deleted Succesfully")
 
       getBlogs();
     } catch (err) {
       alert(err.message);
+      toast.error("Blog Deletion Failed")
     }
   };
 
@@ -73,9 +79,9 @@ const AuthorDashBoard = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center gap-6 p-6 bg-[#f3f4ff]">
-      
+       <LogOutComponent />
       <h1 className="text-4xl font-extrabold text-blue-500">
-        WellCome to Author Dashboard
+        WelCome to Author Dashboard
       </h1>
 
       <div className="bg-white w-96 flex flex-col gap-4 p-6 rounded-xl shadow-md">
